@@ -1,0 +1,2073 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/auth/register": {
+      "post": {
+        "operationId": "AuthController_register",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponseDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Email is already registered"
+          }
+        },
+        "summary": "Register a new user",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User logged in successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid email or password"
+          }
+        },
+        "summary": "User login",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/auth/profile": {
+      "get": {
+        "operationId": "AuthController_getProfile",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Current user profile details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfileResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid JWT token"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get current user profile (JWT protected)",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/projects": {
+      "post": {
+        "operationId": "ProjectsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProjectDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Project created successfully"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Create a new project tenant",
+        "tags": [
+          "Projects"
+        ]
+      },
+      "get": {
+        "operationId": "ProjectsController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "List all registered projects",
+        "tags": [
+          "Projects"
+        ]
+      }
+    },
+    "/api/projects/{id}": {
+      "get": {
+        "operationId": "ProjectsController_findById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get project details by ID",
+        "tags": [
+          "Projects"
+        ]
+      },
+      "put": {
+        "operationId": "ProjectsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProjectDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Update project details and reward settings",
+        "tags": [
+          "Projects"
+        ]
+      }
+    },
+    "/api/projects/{id}/regenerate-api-key": {
+      "post": {
+        "operationId": "ProjectsController_regenerateApiKey",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Regenerate API key for a project",
+        "tags": [
+          "Projects"
+        ]
+      }
+    },
+    "/api/projects/{projectId}/members/login": {
+      "post": {
+        "description": "Public endpoint for mobile/client apps to log in or register end-users. Returns a Member JWT token for accessing /api/me routes.",
+        "operationId": "MembersController_login",
+        "parameters": [
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberLoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Member authenticated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberAuthResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Member login & onboarding (Client / Mobile App)",
+        "tags": [
+          "Members & Wallet"
+        ]
+      }
+    },
+    "/api/projects/{projectId}/members": {
+      "post": {
+        "description": "Creates a project-scoped wallet, generates a project-specific referral code, and awards welcome/referral bonuses.",
+        "operationId": "MembersController_register",
+        "parameters": [
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterMemberDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Member registered/fetched successfully"
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Onboard or fetch a member in a specific project",
+        "tags": [
+          "Members & Wallet"
+        ]
+      },
+      "get": {
+        "operationId": "MembersController_listMembers",
+        "parameters": [
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "List all members belonging to a project",
+        "tags": [
+          "Members & Wallet"
+        ]
+      }
+    },
+    "/api/projects/{projectId}/members/{memberId}": {
+      "get": {
+        "operationId": "MembersController_getMember",
+        "parameters": [
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "memberId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get member details, balance, and referral code",
+        "tags": [
+          "Members & Wallet"
+        ]
+      }
+    },
+    "/api/projects/{projectId}/members/{memberId}/transactions": {
+      "get": {
+        "operationId": "MembersController_getTransactions",
+        "parameters": [
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "memberId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get coin balance transaction history for a member",
+        "tags": [
+          "Members & Wallet"
+        ]
+      }
+    },
+    "/api/projects/{projectId}/members/{memberId}/adjust-coins": {
+      "post": {
+        "operationId": "MembersController_adjustCoins",
+        "parameters": [
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "memberId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdjustCoinsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Adjust member coin balance (credit or debit)",
+        "tags": [
+          "Members & Wallet"
+        ]
+      }
+    },
+    "/api/projects/{projectId}/referrals/stats/{memberId}": {
+      "get": {
+        "operationId": "ReferralsController_getMemberStats",
+        "parameters": [
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "memberId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get referral statistics, referral code, and referee history for a member",
+        "tags": [
+          "Referrals"
+        ]
+      }
+    },
+    "/api/projects/{projectId}/referrals": {
+      "get": {
+        "operationId": "ReferralsController_listProjectReferrals",
+        "parameters": [
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "List all referral conversions across this project",
+        "tags": [
+          "Referrals"
+        ]
+      }
+    },
+    "/api/projects/{projectId}/gift-cards": {
+      "post": {
+        "operationId": "GiftCardsController_create",
+        "parameters": [
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGiftCardDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Gift card created"
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Create a new gift card item in project catalog",
+        "tags": [
+          "Gift Cards"
+        ]
+      },
+      "get": {
+        "operationId": "GiftCardsController_listGiftCards",
+        "parameters": [
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "List all available gift cards in this project",
+        "tags": [
+          "Gift Cards"
+        ]
+      }
+    },
+    "/api/projects/{projectId}/gift-cards/{id}/redeem": {
+      "post": {
+        "description": "Validates coin balance, deducts coins, decreases inventory, and creates a redemption request.",
+        "operationId": "GiftCardsController_redeem",
+        "parameters": [
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RedeemGiftCardDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Member redeems a gift card using project coin balance",
+        "tags": [
+          "Gift Cards"
+        ]
+      }
+    },
+    "/api/projects/{projectId}/gift-cards/redemptions": {
+      "get": {
+        "operationId": "GiftCardsController_listRedemptions",
+        "parameters": [
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "List all gift card redemption requests for this project",
+        "tags": [
+          "Gift Cards"
+        ]
+      }
+    },
+    "/api/projects/{projectId}/gift-cards/redemptions/member/{memberId}": {
+      "get": {
+        "operationId": "GiftCardsController_getMemberRedemptions",
+        "parameters": [
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "memberId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "List redemption history for a specific member",
+        "tags": [
+          "Gift Cards"
+        ]
+      }
+    },
+    "/api/projects/{projectId}/gift-cards/redemptions/{redemptionId}/fulfill": {
+      "put": {
+        "description": "If rejected, coins are automatically refunded back to the member.",
+        "operationId": "GiftCardsController_fulfillRedemption",
+        "parameters": [
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "redemptionId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FulfillRedemptionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Approve, deliver, or reject a redemption request",
+        "tags": [
+          "Gift Cards"
+        ]
+      }
+    },
+    "/api/coupons": {
+      "post": {
+        "description": "Creates a universal promo code that can be used by members of any project to earn that project coins.",
+        "operationId": "CouponsController_createCoupon",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCouponDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Universal coupon created"
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Create a universal coupon (shared across all projects)",
+        "tags": [
+          "Universal Coupons"
+        ]
+      },
+      "get": {
+        "operationId": "CouponsController_listCoupons",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "List all universal coupons",
+        "tags": [
+          "Universal Coupons"
+        ]
+      }
+    },
+    "/api/coupons/{code}": {
+      "get": {
+        "operationId": "CouponsController_getCouponByCode",
+        "parameters": [
+          {
+            "name": "code",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get details of a universal coupon by code",
+        "tags": [
+          "Universal Coupons"
+        ]
+      }
+    },
+    "/api/projects/{projectId}/coupons/redeem": {
+      "post": {
+        "description": "Validates the universal coupon and credits coins to the member project wallet. Each member can only redeem this coupon once per project.",
+        "operationId": "CouponsController_redeemCoupon",
+        "parameters": [
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RedeemCouponDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Coupon redeemed successfully"
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Redeem a universal coupon into a project member wallet",
+        "tags": [
+          "Universal Coupons"
+        ]
+      }
+    },
+    "/api/projects/{projectId}/coupons/redemptions": {
+      "get": {
+        "operationId": "CouponsController_listProjectRedemptions",
+        "parameters": [
+          {
+            "name": "projectId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "api-key": []
+          },
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "List all coupon redemptions for a specific project",
+        "tags": [
+          "Universal Coupons"
+        ]
+      }
+    },
+    "/api/api/gostatus-coupons": {
+      "get": {
+        "description": "Browse all external coupons stored in the local database with brand search, country filters, and pagination.",
+        "operationId": "GostatusCouponsController_listCoupons",
+        "parameters": [
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search keyword across brand name and title",
+            "schema": {
+              "example": "nike",
+              "type": "string"
+            }
+          },
+          {
+            "name": "brand",
+            "required": false,
+            "in": "query",
+            "description": "Filter by specific brand name",
+            "schema": {
+              "example": "Fable Home US",
+              "type": "string"
+            }
+          },
+          {
+            "name": "country",
+            "required": false,
+            "in": "query",
+            "description": "Filter by 2-letter country code (e.g. IN, US)",
+            "schema": {
+              "example": "US",
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Number of coupons per page (max 100)",
+            "schema": {
+              "default": 50,
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number for pagination",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "Sorting criteria",
+            "schema": {
+              "default": "newest",
+              "type": "string",
+              "enum": [
+                "coins_asc",
+                "coins_desc",
+                "newest"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of coupons"
+          }
+        },
+        "summary": "List & Search Synced Gostatus / Feedico Coupons",
+        "tags": [
+          "External / Partner Coupons (Feedico & Gostatus)"
+        ]
+      }
+    },
+    "/api/api/gostatus-coupons/{id}": {
+      "get": {
+        "description": "Retrieve a single synced coupon by its MongoDB ObjectId or external Feedico coupon ID.",
+        "operationId": "GostatusCouponsController_getCoupon",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "MongoDB ObjectId or numeric externalId (e.g. 64895)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Coupon details"
+          },
+          "404": {
+            "description": "Coupon not found"
+          }
+        },
+        "summary": "Get Coupon Details by ID",
+        "tags": [
+          "External / Partner Coupons (Feedico & Gostatus)"
+        ]
+      }
+    },
+    "/api/api/gostatus-coupons/sync": {
+      "post": {
+        "description": "Fetches the latest coupons from Gostatus Supabase and bulk upserts them into MongoDB. (Also runs automatically every day at 03:00 UTC via Cron).",
+        "operationId": "GostatusCouponsController_triggerSync",
+        "parameters": [
+          {
+            "name": "country",
+            "required": false,
+            "in": "query",
+            "description": "Optional 2-letter country code filter (e.g. US, IN)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "maxPages",
+            "required": false,
+            "in": "query",
+            "description": "Max pages to fetch (100 coupons per page, default 50)",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sync execution result with totals and duration"
+          }
+        },
+        "security": [
+          {
+            "JWT-Auth": []
+          }
+        ],
+        "summary": "Trigger Immediate Sync from Gostatus / Feedico Supabase API",
+        "tags": [
+          "External / Partner Coupons (Feedico & Gostatus)"
+        ]
+      }
+    },
+    "/api/me/profile": {
+      "get": {
+        "operationId": "MeController_getProfile",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberProfileDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get current member profile and coin balance",
+        "tags": [
+          "My Account (End-User / Mobile)"
+        ]
+      }
+    },
+    "/api/me/transactions": {
+      "get": {
+        "operationId": "MeController_getTransactions",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get current member coin transaction ledger history",
+        "tags": [
+          "My Account (End-User / Mobile)"
+        ]
+      }
+    },
+    "/api/me/referrals": {
+      "get": {
+        "operationId": "MeController_getReferrals",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get current member referral code, stats, and invited friends list",
+        "tags": [
+          "My Account (End-User / Mobile)"
+        ]
+      }
+    },
+    "/api/me/referral": {
+      "post": {
+        "description": "Applies an invitation referral code to the current member account within the allowed time window, rewarding both the referee and referrer.",
+        "operationId": "MeController_claimReferral",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClaimReferralDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClaimReferralResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Own code used or loop detected"
+          },
+          "403": {
+            "description": "Referral window has expired"
+          },
+          "404": {
+            "description": "Invalid referral code"
+          },
+          "409": {
+            "description": "Referral code already used"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Claim a referral code later for onboarding bonus",
+        "tags": [
+          "My Account (End-User / Mobile)"
+        ]
+      }
+    },
+    "/api/me/gift-cards": {
+      "get": {
+        "operationId": "MeController_getGiftCards",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get available gift cards catalog for current project",
+        "tags": [
+          "My Account (End-User / Mobile)"
+        ]
+      }
+    },
+    "/api/me/gift-cards/{id}/redeem": {
+      "post": {
+        "operationId": "MeController_redeemGiftCard",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Redeem a gift card using current member coin balance",
+        "tags": [
+          "My Account (End-User / Mobile)"
+        ]
+      }
+    },
+    "/api/me/gift-cards/redemptions": {
+      "get": {
+        "operationId": "MeController_getRedemptions",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get current member gift card redemption history",
+        "tags": [
+          "My Account (End-User / Mobile)"
+        ]
+      }
+    },
+    "/api/me/coupons/redeem": {
+      "post": {
+        "operationId": "MeController_redeemCoupon",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RedeemMyCouponDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Redeem a universal coupon code for current member",
+        "tags": [
+          "My Account (End-User / Mobile)"
+        ]
+      }
+    },
+    "/api/me/gostatus-coupons": {
+      "get": {
+        "description": "List coupons with search, brand filtering, country filter, and coin cost sorting.",
+        "operationId": "MeController_listGostatusCoupons",
+        "parameters": [
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search keyword across brand name and title",
+            "schema": {
+              "example": "nike",
+              "type": "string"
+            }
+          },
+          {
+            "name": "brand",
+            "required": false,
+            "in": "query",
+            "description": "Filter by specific brand name",
+            "schema": {
+              "example": "Fable Home US",
+              "type": "string"
+            }
+          },
+          {
+            "name": "country",
+            "required": false,
+            "in": "query",
+            "description": "Filter by 2-letter country code (e.g. IN, US)",
+            "schema": {
+              "example": "US",
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Number of coupons per page (max 100)",
+            "schema": {
+              "default": 50,
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number for pagination",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "Sorting criteria",
+            "schema": {
+              "default": "newest",
+              "type": "string",
+              "enum": [
+                "coins_asc",
+                "coins_desc",
+                "newest"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Browse available Gostatus / Feedico partner coupons",
+        "tags": [
+          "My Account (End-User / Mobile)"
+        ]
+      }
+    },
+    "/api/me/gostatus-coupons/{id}/redeem": {
+      "post": {
+        "description": "Deducts costCoins from member wallet and unlocks the coupon promo code & redemption details.",
+        "operationId": "MeController_redeemGostatusCoupon",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Redeem a partner coupon using current member coins",
+        "tags": [
+          "My Account (End-User / Mobile)"
+        ]
+      }
+    },
+    "/api/me/gostatus-coupons/my-coupons": {
+      "get": {
+        "description": "Returns list of redeemed partner coupons with unlocked promo codes and URLs.",
+        "operationId": "MeController_getMyGostatusCoupons",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get all partner coupons redeemed by current member",
+        "tags": [
+          "My Account (End-User / Mobile)"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Reward & Referral Engine API",
+    "description": "Multi-Project Reward & Referral Backend with project-isolated coins, referrals, gift cards, and universal shared coupons.",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Admin authentication & JWT"
+    },
+    {
+      "name": "Projects",
+      "description": "Multi-tenant project creation and configuration"
+    },
+    {
+      "name": "Members & Wallet",
+      "description": "Project-isolated users, coin balances & transactions"
+    },
+    {
+      "name": "Referrals",
+      "description": "Project-scoped referral stats & conversions"
+    },
+    {
+      "name": "Gift Cards",
+      "description": "Project-specific gift card catalogs & redemptions"
+    },
+    {
+      "name": "Universal Coupons",
+      "description": "Cross-project shared coupon codes"
+    },
+    {
+      "name": "My Account (End-User / Mobile)",
+      "description": "Personal profile, balance, referrals, and reward redemptions for mobile app end-users"
+    },
+    {
+      "name": "External / Partner Coupons (Feedico & Gostatus)",
+      "description": "Synced partner coupons from Gostatus / Feedico with automated daily Cron sync and member coin redemption"
+    }
+  ],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "JWT-auth": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http",
+        "name": "JWT",
+        "description": "Enter Admin JWT token",
+        "in": "header"
+      },
+      "api-key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key",
+        "description": "Project API key for client & mobile application integration"
+      }
+    },
+    "schemas": {
+      "RegisterDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "alex@example.com",
+            "description": "User email"
+          },
+          "password": {
+            "type": "string",
+            "example": "Pass1234!",
+            "description": "User password (minimum 6 characters)"
+          },
+          "name": {
+            "type": "string",
+            "example": "Alex Morgan",
+            "description": "User display name"
+          }
+        },
+        "required": [
+          "email",
+          "password",
+          "name"
+        ]
+      },
+      "UserProfileResponseDto": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "6605df93a40498b0f19c32de"
+          },
+          "email": {
+            "type": "string",
+            "example": "alex@example.com"
+          },
+          "name": {
+            "type": "string",
+            "example": "Alex Morgan"
+          },
+          "roles": {
+            "example": [
+              "user"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2026-10-12T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2026-10-12T10:00:00.000Z"
+          }
+        },
+        "required": [
+          "_id",
+          "email",
+          "name",
+          "roles",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "AuthResponseDto": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+            "description": "JWT Access Token"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserProfileResponseDto"
+          }
+        },
+        "required": [
+          "accessToken",
+          "user"
+        ]
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "alex@example.com",
+            "description": "Registered email address"
+          },
+          "password": {
+            "type": "string",
+            "example": "Pass1234!",
+            "description": "User account password"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "ProjectSettingsDto": {
+        "type": "object",
+        "properties": {
+          "referralRewardCoins": {
+            "type": "number",
+            "example": 50,
+            "description": "Coins given to referrer"
+          },
+          "refereeRewardCoins": {
+            "type": "number",
+            "example": 25,
+            "description": "Coins given to referee"
+          },
+          "welcomeCoins": {
+            "type": "number",
+            "example": 10,
+            "description": "Coins given upon registration"
+          },
+          "currencyName": {
+            "type": "string",
+            "example": "Coins",
+            "description": "Name of the currency"
+          },
+          "referralClaimWindowHours": {
+            "type": "number",
+            "example": 168,
+            "description": "Window in hours after registration during which a member can claim a referral code (default: 168 = 7 days)"
+          },
+          "maxReferralsPerMember": {
+            "type": "number",
+            "example": 10,
+            "description": "Maximum number of rewarded referrals allowed per member (null / undefined for unlimited)"
+          }
+        }
+      },
+      "CreateProjectDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "PocketLog",
+            "description": "Project display name"
+          },
+          "code": {
+            "type": "string",
+            "example": "POCKETLOG",
+            "description": "Unique project identifier code"
+          },
+          "description": {
+            "type": "string",
+            "example": "Reward app for expense tracking users"
+          },
+          "settings": {
+            "$ref": "#/components/schemas/ProjectSettingsDto"
+          }
+        },
+        "required": [
+          "name",
+          "code"
+        ]
+      },
+      "UpdateProjectDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "PocketLog Updated"
+          },
+          "description": {
+            "type": "string",
+            "example": "Updated description"
+          },
+          "isActive": {
+            "type": "boolean",
+            "example": true
+          },
+          "settings": {
+            "$ref": "#/components/schemas/ProjectSettingsDto"
+          }
+        }
+      },
+      "MemberLoginDto": {
+        "type": "object",
+        "properties": {
+          "externalUserId": {
+            "type": "string",
+            "example": "user_12345",
+            "description": "Unique user identifier from your client app (e.g. Firebase UID, device ID, user ID)"
+          },
+          "name": {
+            "type": "string",
+            "example": "Alice Smith",
+            "description": "Display name"
+          },
+          "email": {
+            "type": "string",
+            "example": "alice@example.com",
+            "description": "Email address"
+          },
+          "referralCode": {
+            "type": "string",
+            "example": "POCK9A3F12",
+            "description": "Optional referral code used during onboarding for referral bonus"
+          }
+        },
+        "required": [
+          "externalUserId"
+        ]
+      },
+      "MemberProfileDto": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "6605df93a40498b0f19c32de"
+          },
+          "projectId": {
+            "type": "string",
+            "example": "6605df93a40498b0f19c32df"
+          },
+          "externalUserId": {
+            "type": "string",
+            "example": "user_12345"
+          },
+          "name": {
+            "type": "string",
+            "example": "Alice Smith"
+          },
+          "email": {
+            "type": "string",
+            "example": "alice@example.com"
+          },
+          "coinBalance": {
+            "type": "number",
+            "example": 100,
+            "description": "Current spendable coin balance"
+          },
+          "totalEarnedCoins": {
+            "type": "number",
+            "example": 100,
+            "description": "Lifetime earned coins"
+          },
+          "totalSpentCoins": {
+            "type": "number",
+            "example": 0,
+            "description": "Lifetime spent coins"
+          },
+          "referralCode": {
+            "type": "string",
+            "example": "POCK9A3F12",
+            "description": "Member personal referral code"
+          },
+          "referredBy": {
+            "type": "string",
+            "example": "POCK559443",
+            "description": "Referral code of inviter"
+          }
+        },
+        "required": [
+          "_id",
+          "projectId",
+          "externalUserId",
+          "name",
+          "email",
+          "coinBalance",
+          "totalEarnedCoins",
+          "totalSpentCoins",
+          "referralCode"
+        ]
+      },
+      "MemberAuthResponseDto": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+            "description": "JWT Bearer token for authenticating member /api/me requests"
+          },
+          "member": {
+            "$ref": "#/components/schemas/MemberProfileDto"
+          }
+        },
+        "required": [
+          "accessToken",
+          "member"
+        ]
+      },
+      "RegisterMemberDto": {
+        "type": "object",
+        "properties": {
+          "externalUserId": {
+            "type": "string",
+            "example": "user_12345",
+            "description": "Unique user identifier from your client app"
+          },
+          "name": {
+            "type": "string",
+            "example": "Alice Smith",
+            "description": "Display name"
+          },
+          "email": {
+            "type": "string",
+            "example": "alice@example.com",
+            "description": "Email address"
+          },
+          "referralCode": {
+            "type": "string",
+            "example": "REF1234",
+            "description": "Optional referral code used during onboarding"
+          }
+        },
+        "required": [
+          "externalUserId"
+        ]
+      },
+      "AdjustCoinsDto": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "example": 100,
+            "description": "Amount of coins to credit (positive) or debit (negative)"
+          },
+          "description": {
+            "type": "string",
+            "example": "Bonus campaign reward",
+            "description": "Reason for the adjustment"
+          }
+        },
+        "required": [
+          "amount",
+          "description"
+        ]
+      },
+      "CreateGiftCardDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "$10 Amazon Gift Card",
+            "description": "Gift card name"
+          },
+          "description": {
+            "type": "string",
+            "example": "Digital voucher redeemable on Amazon.com"
+          },
+          "coinCost": {
+            "type": "number",
+            "example": 1000,
+            "description": "Required coin cost to redeem"
+          },
+          "imageUrl": {
+            "type": "string",
+            "example": "https://example.com/amazon-card.png",
+            "description": "Image URL"
+          },
+          "stock": {
+            "type": "number",
+            "example": 50,
+            "description": "Available inventory (-1 for infinite)"
+          },
+          "isActive": {
+            "type": "boolean",
+            "example": true,
+            "description": "Active state"
+          }
+        },
+        "required": [
+          "title",
+          "coinCost"
+        ]
+      },
+      "RedeemGiftCardDto": {
+        "type": "object",
+        "properties": {
+          "memberId": {
+            "type": "string",
+            "example": "6605df93a40498b0f19c32de",
+            "description": "Project member ID redeeming the card"
+          }
+        },
+        "required": [
+          "memberId"
+        ]
+      },
+      "FulfillRedemptionDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "APPROVED",
+              "DELIVERED",
+              "REJECTED"
+            ],
+            "example": "DELIVERED",
+            "description": "Updated redemption status"
+          },
+          "voucherCode": {
+            "type": "string",
+            "example": "AMZN-XXXX-YYYY-ZZZZ",
+            "description": "Digital gift card code or voucher secret"
+          },
+          "adminNote": {
+            "type": "string",
+            "example": "Processed and sent via email",
+            "description": "Admin review note"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "CreateCouponDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "WELCOME100",
+            "description": "Universal promo code (shared across all projects)"
+          },
+          "rewardCoins": {
+            "type": "number",
+            "example": 100,
+            "description": "Coins awarded to the redeeming member in their project"
+          },
+          "maxGlobalUses": {
+            "type": "number",
+            "example": 500,
+            "description": "Total global redemptions allowed across all projects (-1 for unlimited)"
+          },
+          "expiresAt": {
+            "type": "string",
+            "example": "2026-12-31T23:59:59.000Z",
+            "description": "Optional expiration timestamp"
+          },
+          "description": {
+            "type": "string",
+            "example": "New Year universal campaign",
+            "description": "Description of the campaign"
+          },
+          "isActive": {
+            "type": "boolean",
+            "example": true,
+            "description": "Active status"
+          }
+        },
+        "required": [
+          "code",
+          "rewardCoins"
+        ]
+      },
+      "RedeemCouponDto": {
+        "type": "object",
+        "properties": {
+          "couponCode": {
+            "type": "string",
+            "example": "WELCOME100",
+            "description": "Universal coupon code to redeem"
+          },
+          "memberId": {
+            "type": "string",
+            "example": "6605df93a40498b0f19c32de",
+            "description": "Member ID in this project receiving the reward"
+          }
+        },
+        "required": [
+          "couponCode",
+          "memberId"
+        ]
+      },
+      "ClaimReferralDto": {
+        "type": "object",
+        "properties": {
+          "referralCode": {
+            "type": "string",
+            "example": "ARRO91199F",
+            "description": "Referral code to claim for onboarding bonus (4 to 16 characters)"
+          }
+        },
+        "required": [
+          "referralCode"
+        ]
+      },
+      "ClaimReferralResponseDto": {
+        "type": "object",
+        "properties": {
+          "member": {
+            "$ref": "#/components/schemas/MemberProfileDto"
+          },
+          "refereeCoinsAwarded": {
+            "type": "number",
+            "example": 25,
+            "description": "Coins awarded to referee"
+          },
+          "referrerCoinsAwarded": {
+            "type": "number",
+            "example": 50,
+            "description": "Coins awarded to referrer"
+          }
+        },
+        "required": [
+          "member",
+          "refereeCoinsAwarded",
+          "referrerCoinsAwarded"
+        ]
+      },
+      "RedeemMyCouponDto": {
+        "type": "object",
+        "properties": {
+          "couponCode": {
+            "type": "string",
+            "example": "WELCOME100",
+            "description": "Universal promo code to redeem for your wallet"
+          }
+        },
+        "required": [
+          "couponCode"
+        ]
+      }
+    }
+  }
+}

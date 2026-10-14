@@ -1,0 +1,88 @@
+﻿=================================================================
+  STARTING MULTI-PROJECT REWARD ENGINE END-TO-END VERIFICATION   
+=================================================================
+
+[INIT] NestJS Test Instance listening on port 3099
+
+--> STEP 1: Admin Registration & JWT Authentication
+  [PASS] Admin Registration (Status 201)
+  [PASS] Access Token Returned 
+  [PASS] Profile Fetch with JWT (Email: admin_1791869057162@reward.local)
+
+--> STEP 2: Creating Isolated Projects (Project A & Project B)
+  [PASS] Create Project A (ID: 6acdc0811b7e44418763b585, code: ALPHA_7162)
+  [PASS] Project A API Key generated 
+  [PASS] Create Project B (ID: 6acdc0811b7e44418763b58f, code: BETA_7162)
+  [PASS] Unique API Keys per tenant 
+
+--> STEP 3: Member Onboarding & Welcome Bonus in Project A
+  [PASS] Onboard Alice in Project A (MemberId: 6acdc0811b7e44418763b59b)
+  [PASS] Welcome Bonus Awarded (Balance: 10)
+  [PASS] Project-Scoped Referral Code (Code: ALPH2C9B82)
+  [PASS] Welcome Bonus Transaction Logged in Ledger 
+
+--> STEP 4: Referral Engine Flow (Bob registers using Alice referral code)
+  [PASS] Onboard Bob with Referral Code (MemberId: 6acdc0821b7e44418763b5ad)
+  [PASS] Bob Received Welcome + Referee Bonus (Balance: 35)
+  [PASS] Alice Awarded 50 Referral Coins (New Balance: 60)
+  [PASS] Referral Stats Accurate (Invited: 1, Earned: 50)
+
+--> STEP 5: Verifying Strict Project Data Isolation
+  [PASS] Alice Does NOT Exist in Project B (Status: 404)
+  [PASS] Project B Member List is completely isolated and empty 
+
+--> STEP 6: Universal Coupons (Cross-Project Shared Promo Codes)
+  [PASS] Create Universal Coupon (Code: GLOBAL100_7162, Coins: 100)
+  [PASS] Alice Redeems Universal Coupon in Project A 
+  [PASS] Alice Balance Updated (+100) (Balance: 160)
+  [PASS] Duplicate Coupon Redemption Rejected in Project A (Status: 409)
+  [PASS] Onboard Charlie in Project B (Balance: 15)
+  [PASS] Charlie Redeems SAME Universal Coupon in Project B (Cross-Project Shared) (Awarded: 100, New Balance: 115)
+  [PASS] Charlie Balance Reflects Project B Welcome (15) + Coupon (100) = 115 
+
+--> STEP 7: Project-Scoped Gift Card Catalog & Redemption
+  [PASS] Create Gift Card in Project A (Title: $10 Coffee Card, Cost: 100)
+  [PASS] Gift Card Catalog is Isolated to Project A 
+  [PASS] Alice Redeems Gift Card (Redemption ID: 6acdc0831b7e44418763b608)
+  [PASS] Redemption Status is PENDING 
+  [PASS] Alice Balance Decremented by 100 Coins (Balance: 60)
+
+--> STEP 8: Admin Fulfillment & Auto-Refund on Rejection
+  [PASS] Redemption Approved with Voucher Code (Code: COFFEE-ALICE-1234)
+  [PASS] Bob Redeemed Gift Card (Status: PENDING)
+  [PASS] Admin Rejected Redemption Request 
+  [PASS] Bob Coins Automatically Refunded upon Rejection (Balance: 35)
+
+--> STEP 9: Client Mobile Integration via `x-api-key` Header
+  [PASS] Client Mobile App Authenticates via x-api-key Header (Name: Alice Wonder)
+  [PASS] Route supports project slug code via x-api-key (Status: 200)
+  [PASS] Cross-Project Access Blocked when using unauthorized x-api-key (403 Forbidden) (Status: 403)
+  [PASS] Invalid API Key Rejected (401 Unauthorized) (Status: 401)
+
+--> STEP 10: Mobile App End-User Login & /api/me Endpoints
+  [PASS] Public Mobile Login (No Admin Token Required) (ExternalId: mobile_dev_1791869057162)
+  [PASS] Member JWT Token Issued for Client 
+  [PASS] GET /api/me/profile with Member JWT (Name: Mobile App User, Coins: 10)
+  [PASS] Welcome Coins (10) Present in Member Profile 
+  [PASS] Friend Onboarded via Mobile Login with Referral Code 
+  [PASS] Friend Received Welcome (10) + Referee Bonus (25) = 35 (Balance: 35)
+  [PASS] GET /api/me/referrals with Member JWT 
+  [PASS] Referral Stats Accurately Updated (+50 Coins Earned) (Total Invited: 1, Coins: 50)
+  [PASS] POST /api/me/coupons/redeem with Member JWT (No memberId needed in body) (Awarded: 200, New Balance: 260)
+  [PASS] GET /api/me/gift-cards with Member JWT (Catalog Count: 2)
+  [PASS] POST /api/me/gift-cards/:id/redeem using Member JWT (Redemption ID: 6acdc0841b7e44418763b677)
+  [PASS] GET /api/me/gift-cards/redemptions returns member personal redemption records (Count: 1)
+  [PASS] GET /api/me/transactions returns full coin ledger history for member (Ledger Entries: 4)
+
+--- STEP 11: Gostatus / Feedico Partner Coupons Sync & Redemption ---
+  [PASS] POST /api/gostatus-coupons/sync successfully triggers Supabase coupon sync (Result: Synced 5000 coupons (0 new, 5000 updated) in 32.17s)
+  [PASS] GET /api/gostatus-coupons returns paginated coupons from local database (Total: 11999, Returned: 10)
+  [PASS] GET /api/gostatus-coupons/:id retrieves single coupon by externalId (Brand: Sosyopix Viral [Sat─▒┼ƒ] TR)
+  [PASS] GET /api/me/gostatus-coupons allows member to browse partner coupons (Count: 5)
+  [PASS] POST /api/me/gostatus-coupons/:id/redeem redeems coupon and returns promo code (Code: SOSY5799, New Balance: 130)
+  [PASS] GET /api/me/gostatus-coupons/my-coupons lists member redeemed partner coupons (Redeemed count: 1)
+
+=================================================================
+  VERIFICATION RESULTS: 56 PASSED | 0 FAILED
+=================================================================
+

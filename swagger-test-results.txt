@@ -1,0 +1,46 @@
+﻿
+======================================================================
+  SWAGGER-STYLE API TEST RESULTS (All Endpoints via fetch)
+======================================================================
+  [PASS] [201] POST /auth/register -- token:YES
+  [PASS] [200] POST /auth/login -- token:YES
+  [PASS] [200] GET /auth/profile -- email:swg1791871439866@t.com
+  [PASS] [201] POST /projects -- id:6acdc9d0305d1847d986820c
+  [PASS] [200] GET /projects -- count:22
+  [PASS] [200] GET /projects/:id -- name:SwgProj
+  [PASS] [200] PUT /projects/:id -- ok
+  [PASS] [201] POST /members (Alice) -- bal:10 ref:SP9830094D
+  [PASS] [201] POST /members (Bob+referral) -- bal:35
+  [PASS] [200] GET /members -- count:2
+  [PASS] [200] GET /members/:id -- bal:60
+  [PASS] [200] GET /members/transactions -- count:2
+  [FAIL] [400] POST /adjust-coins -- bal:undefined
+  [PASS] [200] GET /referrals/stats -- invited:1 earned:50
+  [PASS] [200] GET /referrals -- count:1
+  [PASS] [201] POST /gift-cards -- title:Card
+  [PASS] [200] GET /gift-cards -- count:1
+  [PASS] [201] POST /gift-cards/redeem -- status:PENDING
+  [PASS] [200] GET /gift-cards/redemptions -- count:1
+  [PASS] [200] GET /redemptions/member/:id -- count:1
+  [PASS] [200] PUT /fulfill (APPROVE) -- voucher:V123
+  [PASS] [201] POST /coupons -- code:C9866
+  [PASS] [200] GET /coupons -- count:16
+  [PASS] [200] GET /coupons/:code -- code:C9866
+  [PASS] [200] POST /coupons/redeem -- awarded:75 bal:85
+  [PASS] [200] GET /coupons/redemptions -- count:1
+  [PASS] [201] POST /members/login (Mobile) -- token:YES
+  [PASS] [200] GET /me/profile -- name:MobUser bal:10
+  [PASS] [200] GET /me/transactions -- count:1
+  [PASS] [200] GET /me/referrals -- invited:0
+  [PASS] [200] GET /me/gift-cards -- count:1
+  [FAIL] [400] POST /me/gift-cards/redeem -- id:undefined
+  [PASS] [200] GET /me/gift-cards/redemptions -- count:0
+  [PASS] [200] POST /me/coupons/redeem -- awarded:30 bal:40
+  [PASS] [200] GET /members (x-api-key) -- count:3
+  [FAIL] [404] POST /gostatus-coupons/sync -- Cannot POST /api/gostatus-coupons/sync
+  [FAIL] [404] GET /gostatus-coupons -- total:undefined ret:undefined
+  [PASS] [200] GET /me/gostatus-coupons -- count:3
+  [PASS] [200] GET /me/gostatus-coupons/my -- count:0
+======================================================================
+  TOTAL: 35/39 PASSED
+======================================================================
